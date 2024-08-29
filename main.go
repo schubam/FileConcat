@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -10,12 +11,17 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: FileConcat <file1> <file2> ... or wildcard pattern like **/*.swift")
+	// Define flags
+	showFilenames := flag.Bool("show-filenames", true, "Prepend filenames to the output")
+	flag.Parse()
+	files := flag.Args()
+
+	if len(files) < 1 {
+		fmt.Println("Usage: FileConcat [options] <file1> <file2> ... or wildcard pattern like **/*.swift")
+		flag.PrintDefaults()
 		return
 	}
 
-	files := os.Args[1:]
 	var fileList []string
 
 	// Handle wildcards
@@ -37,6 +43,11 @@ func main() {
 		if err != nil {
 			fmt.Printf("Error reading file %s: %v\n", file, err)
 			continue
+		}
+
+		// Conditionally add the filename with colon before the content
+		if *showFilenames {
+			output.WriteString(fmt.Sprintf("%s:\n", file))
 		}
 
 		scanner := bufio.NewScanner(strings.NewReader(string(content)))

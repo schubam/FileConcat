@@ -23,6 +23,39 @@ You can use FileConcat by passing in individual filenames or wildcard patterns. 
 ```bash
 ./FileConcat file1.swift file2.go "**/*.js"
 ```
+### Showing or Hiding Filenames
+
+By default, FileConcat prepends the filename with a colon before each file's content. To control this behavior, use the `-show-filenames` flag:
+
+- **Show filenames** (default behavior):
+
+  ```bash
+  ./FileConcat -show-filenames=true file1.swift file2.go
+  ```
+
+  Output:
+
+  ```
+  file1.swift:
+  <contents of file1.swift>
+
+  file2.go:
+  <contents of file2.go>
+  ```
+
+- **Hide filenames**:
+
+  ```bash
+  ./FileConcat -show-filenames=false file1.swift file2.go
+  ```
+
+  Output:
+
+  ```
+  <contents of file1.swift>
+
+  <contents of file2.go>
+  ```
 
 ## Contributing
 
